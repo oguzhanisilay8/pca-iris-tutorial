@@ -13,6 +13,16 @@ This repository is designed as a **simple learning example** for students intere
 
 ---
 
+## Example Output
+
+Below is an example PCA visualization generated from the iris dataset.
+
+![PCA Plot](docs/pca-iris-plot.png)
+
+The PCA plot reduces the dataset to two principal components (PC1 and PC2), allowing us to visualize patterns between samples.
+
+---
+
 # PCA Visualization
 
 The following PCA plot shows how the three iris species are distributed in reduced dimensional space.
@@ -113,6 +123,28 @@ These measurements are used to perform **Principal Component Analysis (PCA)**.
 - ggplot2  
 - GitHub  
 - GitHub Pages  
+
+---
+
+## Learning Goals
+
+This project helps beginners learn the following concepts:
+
+- how dimensionality reduction works
+- how PCA transforms high dimensional data
+- how to visualize PCA results in R
+- how to interpret clustering patterns in biological datasets
+
+---
+
+## Future Improvements
+
+Possible extensions of this project include:
+
+- PCA scree plot analysis
+- variance explained visualization
+- clustering analysis on PCA components
+- applying PCA to real biological datasets
 
 ---
 
