@@ -26,7 +26,9 @@ Below is an example PCA visualization generated from the iris dataset.
 
 ![PCA Plot](docs/pca-iris-plot.png)
 
-The PCA plot reduces the dataset to two principal components (PC1 and PC2), allowing us to visualize patterns between samples.
+The PCA plot reduces the dataset to two principal components (PC1 and PC2), allowing us to visualize patterns between samples.7
+
+![PCA Example](docs/pca-demo.gif)
 
 ---
 
