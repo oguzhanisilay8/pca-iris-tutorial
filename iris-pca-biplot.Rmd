@@ -1,0 +1,171 @@
+---
+title: "PCA Biplot with the Iris Dataset "
+author: "Oğuzhan Işılay"
+output:
+  html_document:
+    toc: true
+    toc_depth: 2
+---
+
+# 0) Goal of this tutorial
+
+In the PCA plot (PC1–PC2) we see that species are separated.
+
+But an important question remains:
+
+**Which variables create this separation?**
+
+A **biplot** helps us answer this.
+
+In a biplot:
+
+- Points = samples (flowers)
+- Arrows = variables (Sepal/Petal measurements)
+
+So we can see **samples and variables in the same plot.**
+
+
+# 1) Load package and dataset
+
+```{r}
+# install.packages("ggplot2")  # run once if needed
+library(ggplot2)
+
+# Load the iris dataset
+data(iris)
+
+# PCA works only with numeric variables
+iris_numeric <- iris[, 1:4]
+
+
+```
+
+# 2) Run PCA
+
+Before PCA we scale the data.
+
+This is important because variables can have different ranges.
+
+```{r}
+# Run PCA with scaling
+pca_result <- prcomp(iris_numeric, scale. = TRUE)
+```
+
+# 3) Two important PCA outputs
+
+A biplot uses two things:
+
+- **Scores** (sample coordinates)  
+- **Loadings** (variable contributions)
+
+## 3.1 Scores (sample coordinates)
+
+`pca_result$x` shows where each sample is located in PCA space.
+
+```{r}
+# Convert scores to a data frame
+scores <- as.data.frame(pca_result$x)
+
+# Add species label (for coloring)
+scores$Species <- iris$Species
+```
+
+## 3.2 Loadings (variable contributions)
+
+`pca_result$rotation` shows how variables influence the PCs.
+
+These values create the arrows in the biplot.
+
+```{r}
+# Extract loadings
+loadings <- as.data.frame(pca_result$rotation)
+
+# Add variable names
+loadings$Variable <- rownames(loadings)
+
+```
+
+# 4) Quick biplot (base R)
+
+This plot is simple but good for understanding the idea.
+
+```{r}
+biplot(pca_result, cex = 0.7)
+```
+
+
+#  5) Better biplot using ggplot
+
+We now create a cleaner plot.
+
+Arrows can be small, so we scale them.
+
+```{r}
+# Arrow scaling factor
+# Loadings arrows can be very small, so we multiply them to make them visible
+scale_factor <- 3
+
+# Create PCA biplot
+# PC1 and PC2 are the first two principal components
+ggplot(scores, aes(x = PC1, y = PC2, color = Species)) +
+
+  # Plot the samples (flowers)
+  # Each point represents one sample
+  geom_point(size = 3) +
+
+  # Draw arrows for variables (loadings)
+  # Arrows start from the origin (0,0)
+  geom_segment(
+    data = loadings,
+    aes(x = 0, y = 0,
+        xend = PC1 * scale_factor,
+        yend = PC2 * scale_factor),
+    arrow = arrow(length = unit(0.2, "cm")),
+    inherit.aes = FALSE
+  ) +
+
+  # Add variable names at the end of arrows
+  # These labels show which measurement each arrow represents
+  geom_text(
+    data = loadings,
+    aes(x = PC1 * scale_factor,
+        y = PC2 * scale_factor,
+        label = Variable),
+    size = 4,
+    vjust = 1.2,
+    inherit.aes = FALSE
+  ) +
+
+  # Label the axes
+  xlab("PC1") +
+  ylab("PC2") +
+
+  # Title of the plot
+  ggtitle("Iris PCA Biplot (Scores + Loadings)") +
+
+  # Use a clean theme
+  theme_minimal()
+```
+
+# 6) How to read a biplot (simple)
+
+When reading a biplot, focus on three things.
+
+## 6.1 Points (samples)
+
+- Points close together → samples are similar  
+- Separate clusters → groups are different  
+
+## 6.2 Arrows (variables)
+
+- The arrow direction shows where the variable increases  
+- Longer arrows usually mean stronger influence on the PCs  
+
+## 6.3 Expected result for the iris dataset
+
+In the iris dataset we usually see:
+
+- **Petal.Length** and **Petal.Width** have strong influence  
+- **Setosa** separates clearly from the other species  
+- **Versicolor** and **Virginica** are closer and may overlap
+
