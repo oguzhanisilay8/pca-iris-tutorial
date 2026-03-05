@@ -2,6 +2,9 @@
 ![PCA](https://img.shields.io/badge/method-PCA-green)
 ![ggplot2](https://img.shields.io/badge/visualization-ggplot2-orange)
 
+Live tutorial:  
+https://oguzhanisilay8.github.io/iris-pca-r/
+
 # PCA Analysis with the Iris Dataset
 
 This project shows a simple example of **Principal Component Analysis (PCA)** using the **iris dataset** in **R**.
